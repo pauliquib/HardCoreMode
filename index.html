@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HardCore Mode — Křehký výstup</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-difficulty="easy">
+    <a class="home-btn" href="../index.html" title="Domů" aria-label="Domů — Časomil portál">⌂</a>
+    <button type="button" id="musicToggle" class="music-toggle" aria-pressed="false" title="Vypnout hudbu" aria-label="Vypnout hudbu">♪</button>
+    <div id="wrap">
+        <!-- Hlavní menu -->
+        <div id="menuPanel" class="visible">
+            <header class="menu-header">
+                <h1 class="menu-title">EASY MODE</h1>
+                <p class="menu-sub">Vyber obtížnost — každá má vlastní téma, hudbu a 7 sektorů</p>
+            </header>
+            <div class="diff-grid" role="list">
+                <button type="button" class="diff-btn selected" data-difficulty="easy" role="listitem">
+                    <span class="diff-label">Easy</span>
+                    <span class="diff-theme">Tréninková zóna</span>
+                    <span class="diff-desc">Pomalá láva · široké plošiny · klidná hudba</span>
+                </button>
+                <button type="button" class="diff-btn" data-difficulty="medium" role="listitem">
+                    <span class="diff-label">Medium</span>
+                    <span class="diff-theme">Ohnivá jáma</span>
+                    <span class="diff-desc">Klasická obtížnost · křehké plošiny</span>
+                </button>
+                <button type="button" class="diff-btn" data-difficulty="hard" role="listitem">
+                    <span class="diff-label">Hard</span>
+                    <span class="diff-theme">Temnota</span>
+                    <span class="diff-desc">Rychlejší láva · pulzní pasti · fialové inferno</span>
+                </button>
+                <button type="button" class="diff-btn" data-difficulty="hardcore" role="listitem">
+                    <span class="diff-label">Hardcore</span>
+                    <span class="diff-theme">Inferno</span>
+                    <span class="diff-desc">Kombinované pasti · minimální tolerance</span>
+                </button>
+                <button type="button" class="diff-btn diff-btn-hell" data-difficulty="bornForHell" role="listitem">
+                    <span class="diff-label">Born for Hell</span>
+                    <span class="diff-theme">Abaddon</span>
+                    <span class="diff-desc">Bez slitování · bílý oheň · maximální chaos</span>
+                </button>
+            </div>
+            <p class="menu-hint">Kliknutím na obtížnost zobrazíš sektory. Jeden dotek červeného = smrt. Láva stoupá. Křehké plošiny se rozpadnou po dopadu.</p>
+            <a href="editor.html" class="menu-editor-link">Tvůrce úrovní</a>
+            <div class="menu-actions">
+                <a href="user-editor.html" class="menu-secondary-btn">Tvůrce map</a>
+                <button type="button" id="loadCustomPackBtn" class="menu-secondary-btn">Načíst vlastní sadu</button>
+            </div>
+        </div>
+
+        <!-- Výběr sektorů (podmenu obtížnosti) -->
+        <div id="sectorPanel">
+            <header class="menu-header sector-panel-header">
+                <button type="button" id="sectorBackBtn" class="sector-back" aria-label="Zpět na výběr obtížnosti">← Zpět</button>
+                <h2 id="sectorPanelTitle" class="sector-panel-title">Sektory</h2>
+                <p id="sectorPanelSub" class="menu-sub">Vyber sektor — postupně se odemykají</p>
+            </header>
+            <div id="sectorGrid" class="sector-grid" role="list"></div>
+            <p id="sectorEmptyHint" class="sector-empty-hint" hidden></p>
+            <div class="menu-actions menu-actions-sector">
+                <a href="user-editor.html" class="menu-secondary-btn">Tvůrce map</a>
+                <button type="button" id="loadCustomPackBtnSector" class="menu-secondary-btn">Načíst vlastní sadu</button>
+                <input type="file" id="customPackFile" accept=".json,.hc-pack.json,application/json" hidden>
+            </div>
+            <button type="button" id="sectorCampaignBtn" class="menu-start sector-campaign">Hrát kampaň od začátku</button>
+        </div>
+
+        <!-- Herní obrazovka -->
+        <div id="gamePanel">
+            <div id="hud">
+                <span>Obtížnost: <strong id="diffEl">Medium</strong></span>
+                <span>Sektor <strong id="sectorEl">1</strong> / <strong id="sectorTotalEl">7</strong></span>
+                <span>Smrti (běh): <strong class="danger-stat" id="deathsEl">0</strong></span>
+                <span>Čas: <strong id="timeEl">0.0</strong>s</span>
+                <span>Checkpoint: <strong id="cpEl">—</strong></span>
+            </div>
+            <div id="canvas-wrap">
+                <canvas id="game" width="880" height="520"></canvas>
+                <div id="overlay">
+                    <h1 id="ovTitle">PAUZA</h1>
+                    <p id="ovText"></p>
+                    <div class="keys" id="keysHint">WASD / šipky · mezerník skok + dvojskok · R restart sektoru · P pauza · Esc menu</div>
+                    <button type="button" id="startBtn">Pokračovat</button>
+                </div>
+            </div>
+            <p id="hint">Férové pravidla: žádné náhodné pasti; pohybující se překážky mají předvídatelnou dráhu. Esc = zpět do menu.</p>
+        </div>
+    </div>
+    <script src="jumpPhysics.js"></script>
+    <script src="spikeDraw.js"></script>
+    <script src="packGuard.js"></script>
+    <script src="userPack.js"></script>
+    <script src="levels-pack.js"></script>
+    <script src="levelStore.js"></script>
+    <script src="progressStore.js"></script>
+    <script src="sectorPreview.js"></script>
+    <script src="pickupEffects.js"></script>
+    <script src="playerReact.js"></script>
+    <script src="crumblePlatform.js"></script>
+    <script src="playerTouch.js"></script>
+    <script src="levels.js"></script>
+    <script src="audio.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

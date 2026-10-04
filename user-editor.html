@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HardCore Mode — Tvůrce map</title>
+    <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+    <a class="back" href="index.html">← Hra</a>
+    <div id="app">
+        <header class="bar">
+            <h1>TVŮRCE MAP</h1>
+            <div class="bar-actions">
+                <button type="button" id="btnValidate">Ověřit skoky</button>
+                <button type="button" id="btnTest">Otestovat ve hře</button>
+                <button type="button" id="btnExport" class="primary">Uložit do PC</button>
+                <button type="button" id="btnImport">Načíst z PC</button>
+            </div>
+        </header>
+
+        <aside class="sidebar">
+            <nav class="sidebar-tabs" role="tablist">
+                <button type="button" class="sidebar-tab active" data-sidebar-panel="level" role="tab" aria-selected="true">LEVEL</button>
+                <button type="button" class="sidebar-tab" data-sidebar-panel="colors" role="tab" aria-selected="false">BARVY</button>
+                <button type="button" class="sidebar-tab" data-sidebar-panel="audio" role="tab" aria-selected="false">HUDBA</button>
+            </nav>
+
+            <div class="sidebar-panel active" id="sidebarLevel" role="tabpanel">
+                <div id="userProjectField" class="field">
+                    <label for="projectName">Název projektu</label>
+                    <input type="text" id="projectName" maxlength="80" placeholder="Můj projekt">
+                </div>
+                <p class="hint">Vytvoř si vlastní sadu levelů. Soubor uložíš do PC a můžeš ho sdílet nebo znovu načíst ve hře.</p>
+                <p class="hint">Zkratky: Ctrl+Z zpět · Ctrl+Y vpřed · Ctrl+C/V/X/D · Delete smazat výběr</p>
+
+                <h2>Levely</h2>
+                <ul id="sectorList"></ul>
+                <button type="button" id="btnAddSector">+ Přidat level</button>
+            </div>
+
+            <div class="sidebar-panel" id="sidebarColors" role="tabpanel">
+                <p class="hint">Barvy platí pro celý projekt (pozadí, plošiny, láva…).</p>
+                <div id="themePalette"></div>
+                <button type="button" id="btnResetTheme" class="ghost">Obnovit výchozí barvy</button>
+            </div>
+
+            <div class="sidebar-panel" id="sidebarAudio" role="tabpanel">
+                <p class="hint">Nahraj vlastní skladbu (MP3, OGG, WAV). Použij jen hudbu, ke které máš práva.</p>
+                <div class="field">
+                    <label for="musicFile">Soubor hudby</label>
+                    <input type="file" id="musicFile" accept="audio/mpeg,audio/ogg,audio/wav,audio/webm,audio/*">
+                </div>
+                <p class="hint" id="musicFileName">Žádná vlastní hudba</p>
+                <div class="field-row">
+                    <button type="button" id="btnPreviewMusic" class="ghost">Přehrát náhled</button>
+                    <button type="button" id="btnRemoveMusic" class="ghost danger">Odstranit hudbu</button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="stage">
+            <div class="toolbar" id="toolBar">
+                <button type="button" id="btnPlay" title="Spustit test hratelnosti" aria-label="Spustit test">▶</button>
+                <button type="button" data-tool="select" class="active">Výběr</button>
+                <button type="button" id="btnCopy" title="Kopírovat výběr (Ctrl+C)">Kopírovat</button>
+                <button type="button" id="btnPaste" title="Vložit (Ctrl+V)">Vložit</button>
+                <button type="button" data-tool="solid">Pevná plošina</button>
+                <button type="button" data-tool="crumble">Křehká plošina</button>
+                <button type="button" data-tool="spike">Spiky</button>
+                <button type="button" data-tool="goal">Cíl</button>
+                <button type="button" data-tool="spawn">Spawn</button>
+                <button type="button" data-tool="mover">Kyvadlo</button>
+                <button type="button" data-tool="pulse">Pulz</button>
+                <button type="button" data-tool="pickup">Bonus</button>
+                <button type="button" data-tool="delete">Smazat</button>
+            </div>
+            <div id="canvasWrap">
+                <canvas id="editor" width="880" height="520" tabindex="0" aria-label="Plátno editoru"></canvas>
+            </div>
+        </main>
+
+        <aside class="props">
+            <h2>Level</h2>
+            <div class="field">
+                <label>Název</label>
+                <input type="text" id="propName">
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label>Rychlost lávy</label>
+                    <input type="number" id="propLavaSpeed" min="1" max="100" step="1">
+                </div>
+                <div class="field">
+                    <label>Start lávy (offset)</label>
+                    <input type="number" id="propLavaOffset" min="20" max="200" step="1">
+                </div>
+            </div>
+
+            <h2>Výběr</h2>
+            <div id="selectionPanel">
+                <p class="hint">Klikni na prvek, táhni pro přesun nebo za roh pro změnu velikosti.</p>
+            </div>
+
+            <h2>Validace skoků</h2>
+            <ul id="validationList"></ul>
+        </aside>
+
+        <div id="statusBar">Připraveno</div>
+    </div>
+
+    <script>
+        window.HC_EDITOR_CONFIG = { mode: 'user' };
+    </script>
+    <script src="jumpPhysics.js"></script>
+    <script src="spikeDraw.js"></script>
+    <script src="packGuard.js"></script>
+    <script src="userPack.js"></script>
+    <script src="levelStore.js"></script>
+    <script src="pickupEffects.js"></script>
+    <script src="playerReact.js"></script>
+    <script src="crumblePlatform.js"></script>
+    <script src="playerTouch.js"></script>
+    <script src="sectorSim.js"></script>
+    <script src="audio.js"></script>
+    <script src="editor.js"></script>
+</body>
+</html>
