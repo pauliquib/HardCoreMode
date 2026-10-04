@@ -2,6 +2,16 @@
 
 Plošinovková hra běžící čistě v prohlížeči (vanilla JS, Canvas, Web Audio API) — bez serveru, bez odesílání dat. Obsahuje i editor map pro vlastní úrovně.
 
+## Screenshoty
+
+| Hra | Výběr sektorů |
+|---|---|
+| ![Hra](docs/screenshots/game.jpg) | ![Výběr sektorů](docs/screenshots/sectors.jpg) |
+
+| Editor map |
+|---|
+| ![Editor map](docs/screenshots/editor.jpg) |
+
 ## Spuštění
 
 Stačí statický webserver, např.:
