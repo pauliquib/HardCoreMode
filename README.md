@@ -1,39 +1,39 @@
 # HardCore Mode
 
-Plošinovková hra běžící čistě v prohlížeči (vanilla JS, Canvas, Web Audio API) — bez serveru, bez odesílání dat. Obsahuje i editor map pro vlastní úrovně.
+A platformer game that runs entirely in the browser (vanilla JS, Canvas, Web Audio API) — no server, no data sent anywhere. It also includes a map editor for creating your own levels.
 
-*Veřejný snapshot — vývoj probíhá v privátním repozitáři, historie commitů je zde squashnutá.*
+*Public snapshot — development happens in a private repository; the commit history is squashed here.*
 
-## Screenshoty
+## Screenshots
 
-| Hra | Výběr sektorů |
+| Game | Sector selection |
 |---|---|
-| ![Hra](docs/screenshots/game.jpg) | ![Výběr sektorů](docs/screenshots/sectors.jpg) |
+| ![Game](docs/screenshots/game.jpg) | ![Sector selection](docs/screenshots/sectors.jpg) |
 
-| Editor map |
+| Map editor |
 |---|
-| ![Editor map](docs/screenshots/editor.jpg) |
+| ![Map editor](docs/screenshots/editor.jpg) |
 
-## Spuštění
+## Running
 
-Stačí statický webserver, např.:
+A static web server is enough, for example:
 
 ```bash
 node dev-server.cjs
 ```
 
-a otevřít `http://localhost:8765/index.html` (hra) nebo `http://localhost:8765/editor.html` (editor map).
+then open `http://localhost:8765/index.html` (the game) or `http://localhost:8765/editor.html` (the map editor).
 
-## Sestavení publikované verze
+## Building the published version
 
 ```bash
 node build-public.cjs
 ```
 
-Vygeneruje omezenou/publikovatelnou verzi do `public/` (viz `publish-config.js`).
+This generates a restricted, publishable version in `public/` (see `publish-config.js`).
 
-## Licence
+## License
 
-MIT, viz [LICENSE](LICENSE). Právní a privacy informace k publikované verzi: [PUBLIC_LEGAL.md](PUBLIC_LEGAL.md).
+MIT, see [LICENSE](LICENSE). Legal and privacy information for the published version: [PUBLIC_LEGAL.md](PUBLIC_LEGAL.md) (in Czech).
 
-Autor: Časomil
+Author: Časomil
