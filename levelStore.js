@@ -316,18 +316,25 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(pack));
     }
 
+    /** Pack musí obsahovat aspoň jednu obtížnost s polem sektorů — jinak jde
+     *  o poškozený/legacy soubor a editor by zobrazil prázdný pseudo-level. */
+    function isPackData(pack) {
+        if (!pack || typeof pack !== 'object' || Array.isArray(pack)) return false;
+        return Object.values(pack).some(
+            (diff) => diff && typeof diff === 'object' && Array.isArray(diff.sectors)
+        );
+    }
+
     function getProjectPack() {
-        if (global.HC_LEVELS_PACK && typeof global.HC_LEVELS_PACK === 'object') {
-            return deepClone(global.HC_LEVELS_PACK);
-        }
-        return null;
+        const pack = global.HC_LEVELS_PACK;
+        return isPackData(pack) ? deepClone(pack) : null;
     }
 
     function getDifficulties() {
         const cfg = global.HC_PUBLISH_CONFIG;
         if (!cfg?.production) {
             const stored = loadRaw();
-            if (stored) return stored;
+            if (isPackData(stored)) return stored;
         }
         const project = getProjectPack();
         if (project) return project;
@@ -412,6 +419,7 @@
         createSectorTemplate,
         createDefaultPack,
         getDifficulties,
+        isPackData,
         getProjectPack,
         saveDifficulties,
         resetToDefaults,
